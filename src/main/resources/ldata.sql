@@ -1,0 +1,1 @@
+--INSERT INTO church (church_id, name, phone) VALUES (1L, 'Oak Cliff SDA', '817-222-2565');
