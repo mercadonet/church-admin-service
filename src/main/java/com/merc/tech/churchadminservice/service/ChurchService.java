@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -25,8 +24,12 @@ public class ChurchService {
         return churchRepository.findAll();
     }
 
-    public void createChurch(Church church) {
-        churchRepository.save(church);
+    public Church saveChurch(Church church) {
+        return churchRepository.save(church);
+    }
+
+    public void deleteChurch(Long churchId) {
+        churchRepository.deleteById(churchId);
     }
 
     public void addChurchMember(Long churchId, Member member) {
