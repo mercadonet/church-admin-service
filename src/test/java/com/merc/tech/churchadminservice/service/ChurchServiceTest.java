@@ -5,7 +5,6 @@ import com.merc.tech.churchadminservice.model.Member;
 import com.merc.tech.churchadminservice.repository.ChurchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -64,10 +63,10 @@ class ChurchServiceTest {
     }
 
     @Test
-    void createChurch_ShouldSaveChurch() {
+    void saveChurch_ShouldSaveChurch() {
         Church church = new Church();
 
-        churchService.createChurch(church);
+        churchService.saveChurch(church);
 
         verify(churchRepository, times(1)).save(church);
     }

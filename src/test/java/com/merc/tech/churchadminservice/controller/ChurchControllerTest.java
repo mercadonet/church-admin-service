@@ -11,8 +11,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 class ChurchControllerTest {
@@ -31,11 +33,15 @@ class ChurchControllerTest {
     @Test
     void createChurch_ShouldReturnOkResponse() {
         Church church = new Church();
-        ResponseEntity<String> response = churchController.createChurch(church);
+        church.setChurchId(1L);
+        when(churchService.saveChurch(church)).thenReturn(church);
 
-        verify(churchService, times(1)).createChurch(church);
-        assertEquals("Church created", response.getBody());
-        assertEquals(200, response.getStatusCodeValue());
+        ResponseEntity<Void> response = churchController.createChurch(church);
+
+        verify(churchService, times(1)).saveChurch(church);
+        assertTrue(response.getHeaders().containsKey("Location"));
+        assertEquals("/church/1", Objects.requireNonNull(response.getHeaders().get("Location")).get(0));
+        assertTrue(response.getStatusCode().is2xxSuccessful());
     }
 
     @Test
@@ -72,4 +78,25 @@ class ChurchControllerTest {
         assertEquals(church1, response.get(0));
         assertEquals(church2, response.get(1));
     }
+
+    @Test
+    void updateChurch_ShouldReturnOkResponse() {
+        Church church = new Church();
+        church.setChurchId(1L);
+        when(churchService.saveChurch(church)).thenReturn(church);
+
+        ResponseEntity<Void> response = churchController.updateChurch(1L, church);
+
+        verify(churchService, times(1)).saveChurch(church);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+    }
+
+    @Test
+    void deleteChurch_ShouldReturnOkResponse() {
+        ResponseEntity<Void> response = churchController.deleteChurch(1L);
+
+        verify(churchService, times(1)).deleteChurch(1L);
+        assertTrue(response.getStatusCode().is2xxSuccessful());
+    }
+
 }

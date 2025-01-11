@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -19,10 +20,25 @@ public class ChurchController {
     private final ChurchService churchService;
 
     @PostMapping("church")
-    ResponseEntity<String> createChurch(@Valid @RequestBody Church church) {
+    ResponseEntity<Void> createChurch(@Valid @RequestBody Church church) {
         log.info("Attempting to create a church");
-        churchService.createChurch(church);
-        return ResponseEntity.ok("Church created");
+        Church newChurch = churchService.saveChurch(church);
+        return ResponseEntity.created(URI.create("/church/" + newChurch.getChurchId())).build();
+    }
+
+    @PutMapping("church/{churchId}")
+    ResponseEntity<Void> updateChurch(@PathVariable("churchId") Long churchId, @Valid @RequestBody Church church) {
+        log.info("Attempting to update a church");
+        church.setChurchId(churchId);
+        Church newChurch = churchService.saveChurch(church);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("church/{churchId}")
+    ResponseEntity<Void> deleteChurch(@PathVariable("churchId") Long churchId) {
+        log.info("Attempting to delete a church");
+        churchService.deleteChurch(churchId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("church/{churchId}/member")

@@ -9,11 +9,12 @@ group = "com.merc.tech"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jacoco {
-	toolVersion = "0.8.8"
+	toolVersion = "0.8.10"
 }
 
 configurations {
@@ -61,6 +62,9 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("io.rest-assured:rest-assured:5.3.0")
+	testImplementation("io.rest-assured:json-path:5.3.0")
+	testImplementation("io.rest-assured:xml-path:5.3.0")
 }
 
 tasks.withType<Test> {
