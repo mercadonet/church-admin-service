@@ -5,25 +5,31 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 @Data
 @Entity
 @NoArgsConstructor
+@DynamoDbBean
 public class Church {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(description = "Unique identifier of the church")
+    @Getter(onMethod = @__({@DynamoDbPartitionKey}))
     private Long churchId;
 
     @NotBlank(message = "Name is mandatory")
     @Schema(description = "Name of the church", example = "Dallas Spanish Oak Cliff")
+    @Getter(onMethod = @__({@DynamoDbAttribute("name")}))
     private String name;
 
     @NotBlank(message = "Phone is mandatory")

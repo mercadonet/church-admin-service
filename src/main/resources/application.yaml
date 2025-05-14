@@ -11,3 +11,10 @@ spring:
 logging:
   config: classpath:logback-spring.xml
 
+aws:
+  dynamodb:
+    endpoint: http://localhost:8000
+    region: us-west-2
+    access-key: fakeMyKeyId
+    secret-key: fakeSecretAccessKey
+
